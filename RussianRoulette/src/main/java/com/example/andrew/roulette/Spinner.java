@@ -48,6 +48,10 @@ public class Spinner extends AppCompatActivity {
                         finish();
                         break;
                     case R.id.spin:
+                        if(list.size() == 0)
+                        {
+                            break;
+                        }
                         degreeOld = degree % 360;
                         degree = (int) (Math.random() * 360) + 1080;
                         RotateAnimation rotate = new RotateAnimation(degreeOld, degree, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
@@ -97,6 +101,15 @@ public class Spinner extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         list = getIntent().getStringArrayListExtra("items");
+        if(list.contains(""))
+        {
+            list.remove("");
+        }
+        if(list.size() == 0)
+        {
+            TextView out = (TextView) findViewById(R.id.error);
+            out.setText("EMPTY LIST!");
+        }
         pieChart = (PieChart) findViewById(R.id.pie);
         pieChart.setRotationEnabled(false);
         pieChart.setDrawHoleEnabled(false);
@@ -143,6 +156,10 @@ public class Spinner extends AppCompatActivity {
         if(resultCode == 5)
         {
             list = data.getStringArrayListExtra("editedList");
+            if(list.contains(""))
+            {
+                list.remove("");
+            }
             addDataSet();
         }
     }

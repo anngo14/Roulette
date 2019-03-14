@@ -46,7 +46,7 @@ public class editItems extends AppCompatActivity {
         dialog.setTitle("Input Box");
         dialog.setContentView(R.layout.input_box);
         TextView txtMessage = (TextView) dialog.findViewById(R.id.txtmessage);
-        txtMessage.setText("Update Item");
+        txtMessage.setText("Update Item\n Set to Empty String to Delete");
         txtMessage.setTextColor(Color.parseColor("#ff2222"));
         final EditText editText = (EditText) dialog.findViewById(R.id.txtinput);
         editText.setText(old);

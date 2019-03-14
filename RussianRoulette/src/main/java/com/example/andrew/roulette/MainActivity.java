@@ -108,10 +108,19 @@ public class MainActivity extends AppCompatActivity {
         {
             String message = data.getStringExtra("newItem");
             itemList.add(message);
+            if(message.compareTo("") == 0)
+            {
+                itemList.remove(message);
+            }
+
         }
         else if(requestCode == 3)
         {
             itemList = data.getStringArrayListExtra("editedList");
+            if(itemList.contains(""))
+            {
+                itemList.remove("");
+            }
             ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, itemList);
             ListView listView = (ListView) findViewById(R.id.list);
 
@@ -120,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
         else if(requestCode == 4)
         {
             itemList = data.getStringArrayListExtra("editFromSpin");
+            if(itemList.contains(""))
+            {
+                itemList.remove("");
+            }
             ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, itemList);
             ListView listView = (ListView) findViewById(R.id.list);
 
