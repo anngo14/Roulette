@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:textSize="25dp"
+        android:textSize="15dp"
         />
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,8 +16,8 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
         >
-        <EditText
-            android:id="@+id/txtinput"
+        <TextView
+            android:id="@+id/txtold"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -26,7 +26,14 @@
             android:id="@+id/btdone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Done"
+            android:text="Yes"
+            android:layout_weight="1"
+            />
+        <Button
+            android:id="@+id/btno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No"
             android:layout_weight="1"
             />
     </LinearLayout>

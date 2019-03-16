@@ -50,6 +50,8 @@ public class Spinner extends AppCompatActivity {
                     case R.id.spin:
                         if(list.size() == 0)
                         {
+                            TextView out = (TextView) findViewById(R.id.output);
+                            out.setText("ERROR! No items in Roulette");
                             break;
                         }
                         degreeOld = degree % 360;
@@ -159,6 +161,11 @@ public class Spinner extends AppCompatActivity {
             if(list.contains(""))
             {
                 list.remove("");
+            }
+            if(list.size() == 0)
+            {
+                TextView out = (TextView) findViewById(R.id.error);
+                out.setText("EMPTY LIST!");
             }
             addDataSet();
         }

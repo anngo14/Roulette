@@ -39,6 +39,14 @@ public class editItems extends AppCompatActivity {
                 showInputBox(list.get(i), i);
             }
         });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int i, long l) {
+                showDeleteBox(list.get(i), i);
+                return true;
+            }
+        });
+
     }
 
     public void showInputBox(String old, final int index){
@@ -46,7 +54,7 @@ public class editItems extends AppCompatActivity {
         dialog.setTitle("Input Box");
         dialog.setContentView(R.layout.input_box);
         TextView txtMessage = (TextView) dialog.findViewById(R.id.txtmessage);
-        txtMessage.setText("Update Item\n Set to Empty String to Delete");
+        txtMessage.setText("Update Item");
         txtMessage.setTextColor(Color.parseColor("#ff2222"));
         final EditText editText = (EditText) dialog.findViewById(R.id.txtinput);
         editText.setText(old);
@@ -60,6 +68,36 @@ public class editItems extends AppCompatActivity {
             }
         });
         dialog.show();
+    }
+
+    public void showDeleteBox(String old, final int index)
+    {
+        final Dialog dialog = new Dialog(editItems.this);
+        dialog.setTitle("Delete");
+        dialog.setContentView(R.layout.delete_box);
+        TextView txtMessage = (TextView) dialog.findViewById(R.id.txtmessage);
+        txtMessage.setText("Do you wish to Delete Item?");
+        txtMessage.setTextColor(Color.parseColor("#ff2222"));
+        final TextView txtold = (TextView) dialog.findViewById(R.id.txtold);
+        txtold.setText(old);
+        Button bt = (Button)dialog.findViewById(R.id.btdone);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                list.remove(index);
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        Button bt2 = (Button)dialog.findViewById(R.id.btno);
+        bt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
     }
     public void configureSaveButton()
     {
