@@ -27,11 +27,11 @@ import static java.util.Random.*;
 public class Spinner extends AppCompatActivity {
 
     private TextView mTextMessage;
-    ArrayList<String> list = new ArrayList<String>();
+    RouletteList roulette = new RouletteList();
     PieChart pieChart;
     private int[] percent;
     private int degree = 0, degreeOld = 0;
-    private float HALF_SECTOR = 360f / list.size() / 2f;
+    private float HALF_SECTOR = 360f / roulette.getItemList().size() / 2f;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
 
@@ -43,12 +43,12 @@ public class Spinner extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
                         Intent main = new Intent();
-                        main.putExtra("editFromSpin", list);
+                        main.putExtra("editFromSpin", roulette);
                         setResult(4, main);
                         finish();
                         break;
                     case R.id.spin:
-                        if(list.size() == 0)
+                        if(roulette.getItemList().size() == 0)
                         {
                             TextView out = (TextView) findViewById(R.id.output);
                             out.setText("ERROR! No items in Roulette");
@@ -83,7 +83,7 @@ public class Spinner extends AppCompatActivity {
                         break;
                     case R.id.editData:
                         Intent edit = new Intent(Spinner.this, editItems.class);
-                        edit.putExtra("items", list);
+                        edit.putExtra("items", roulette);
                         startActivityForResult(edit, 5);
                         break;
                 }
@@ -96,18 +96,20 @@ public class Spinner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spinner);
-        setTitle("Roulette");
+        setTitle(roulette.getListName());
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        list = getIntent().getStringArrayListExtra("items");
-        if(list.contains(""))
+        roulette = getIntent().getParcelableExtra("items");
+        if(roulette.getItemList().contains(""))
         {
-            list.remove("");
+            ArrayList<String> temp = roulette.getItemList();
+            temp.remove("");
+            roulette.setItemList(temp);
         }
-        if(list.size() == 0)
+        if(roulette.getItemList().size() == 0)
         {
             TextView out = (TextView) findViewById(R.id.error);
             out.setText("EMPTY LIST!");
@@ -125,9 +127,9 @@ public class Spinner extends AppCompatActivity {
     private void addDataSet( )
     {
         ArrayList<PieEntry> yEntry = new ArrayList<>();
-        for(int i = 0; i < list.size(); i++)
+        for(int i = 0; i < roulette.getItemList().size(); i++)
         {
-            yEntry.add(new PieEntry(list.size()/100.0f * 100f, list.get(i)));
+            yEntry.add(new PieEntry(roulette.getItemList().size()/100.0f * 100f, roulette.getItemList().get(i)));
         }
 
         PieDataSet pieDataSet = new PieDataSet(yEntry, "Percent");
@@ -149,7 +151,7 @@ public class Spinner extends AppCompatActivity {
             degrees -= 360;
         }
         int index = pieChart.getIndexForAngle(degrees + 270);
-        return list.get(index);
+        return roulette.getItemList().get(index);
     }
 
     @Override
@@ -157,12 +159,14 @@ public class Spinner extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == 5)
         {
-            list = data.getStringArrayListExtra("editedList");
-            if(list.contains(""))
+            roulette = data.getParcelableExtra("editedList");
+            if(roulette.getItemList().contains(""))
             {
-                list.remove("");
+                ArrayList<String> temp = roulette.getItemList();
+                temp.remove("");
+                roulette.setItemList(temp);
             }
-            if(list.size() == 0)
+            if(roulette.getItemList().size() == 0)
             {
                 TextView out = (TextView) findViewById(R.id.error);
                 out.setText("EMPTY LIST!");

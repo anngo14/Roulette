@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<String> itemList = new ArrayList<String>();
+    RouletteList roulette = new RouletteList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         configureNextButton();
         configureSpinButton();
         configureDeleteButton();
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, itemList);
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, roulette.getItemList());
         ListView listView = (ListView) findViewById(R.id.list);
 
         listView.setAdapter(adapter);
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent1 = new Intent(MainActivity.this, editItems.class);
-            intent1.putExtra("items", itemList);
+            intent1.putExtra("items", roulette);
             startActivityForResult(intent1, 3);
         }
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent spin = new Intent(MainActivity.this, Spinner.class);
-                spin.putExtra("items", itemList);
+                spin.putExtra("items", roulette);
                 startActivityForResult(spin, 4);
             }
         });
@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                itemList.clear();
-                ArrayAdapter adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.activity_listview, itemList);
+                roulette.getItemList().clear();
+                ArrayAdapter adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.activity_listview, roulette.getItemList());
                 ListView listView = (ListView) findViewById(R.id.list);
 
                 listView.setAdapter(adapter);
@@ -107,33 +107,41 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == 2)
         {
             String message = data.getStringExtra("newItem");
-            itemList.add(message);
+            ArrayList<String> temp = roulette.getItemList();
+            temp.add(message);
+            roulette.setItemList(temp);
             if(message.compareTo("") == 0)
             {
-                itemList.remove(message);
+                temp = roulette.getItemList();
+                temp.remove(message);
+                roulette.setItemList(temp);
             }
 
         }
         else if(requestCode == 3)
         {
-            itemList = data.getStringArrayListExtra("editedList");
-            if(itemList.contains(""))
+            roulette = data.getParcelableExtra("editedList");
+            if(roulette.getItemList().contains(""))
             {
-                itemList.remove("");
+                ArrayList<String> temp = roulette.getItemList();
+                temp.remove("");
+                roulette.setItemList(temp);
             }
-            ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, itemList);
+            ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, roulette.getItemList());
             ListView listView = (ListView) findViewById(R.id.list);
 
             listView.setAdapter(adapter);
         }
         else if(requestCode == 4)
         {
-            itemList = data.getStringArrayListExtra("editFromSpin");
-            if(itemList.contains(""))
+            roulette = data.getParcelableExtra("editFromSpin");
+            if(roulette.getItemList().contains(""))
             {
-                itemList.remove("");
+                ArrayList<String> temp = roulette.getItemList();
+                temp.remove("");
+                roulette.setItemList(temp);
             }
-            ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, itemList);
+            ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, roulette.getItemList());
             ListView listView = (ListView) findViewById(R.id.list);
 
             listView.setAdapter(adapter);

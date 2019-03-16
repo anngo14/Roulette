@@ -1,10 +1,13 @@
 package com.example.andrew.roulette;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class RouletteList {
+public class RouletteList implements Parcelable {
     private String listName;
-    private ArrayList<String> itemList;
+    private ArrayList itemList;
 
     public RouletteList()
     {
@@ -16,7 +19,22 @@ public class RouletteList {
         listName = title;
         itemList = items;
     }
+    public RouletteList(Parcel in)
+    {
+        listName = in.readString();
+        itemList = in.readArrayList(String.class.getClassLoader());
+    }
+    @SuppressWarnings("rawtypes")
+    public static final Parcelable.Creator CREATOR =
+            new Parcelable.Creator() {
+                public RouletteList createFromParcel(Parcel in) {
+                    return new RouletteList(in);
+                }
 
+                public RouletteList[] newArray(int size) {
+                    return new RouletteList[size];
+                }
+            };
     public String getListName()
     {
         return this.listName;
@@ -33,5 +51,16 @@ public class RouletteList {
     public void setItemList(ArrayList<String> items)
     {
         itemList = items;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(listName);
+        dest.writeList(itemList);
     }
 }

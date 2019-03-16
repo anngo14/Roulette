@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class editItems extends AppCompatActivity {
 
-    ArrayList<String> list = new ArrayList<String>();
+    RouletteList temp = new RouletteList();
     ArrayAdapter<String> adapter;
 
     @Override
@@ -28,21 +28,21 @@ public class editItems extends AppCompatActivity {
         setContentView(R.layout.activity_edit_items);
 
         configureSaveButton();
-        list = getIntent().getStringArrayListExtra("items");
-        adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, list);
+        temp = getIntent().getParcelableExtra("items");
+        adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, temp.getItemList());
         ListView listView = (ListView) findViewById(R.id.list);
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                showInputBox(list.get(i), i);
+                showInputBox(temp.getItemList().get(i), i);
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int i, long l) {
-                showDeleteBox(list.get(i), i);
+                showDeleteBox(temp.getItemList().get(i), i);
                 return true;
             }
         });
@@ -62,7 +62,7 @@ public class editItems extends AppCompatActivity {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                list.set(index, editText.getText().toString());
+                temp.getItemList().set(index, editText.getText().toString());
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -84,7 +84,9 @@ public class editItems extends AppCompatActivity {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                list.remove(index);
+                ArrayList<String> tmp = temp.getItemList();
+                tmp.remove(index);
+                temp.setItemList(tmp);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -106,7 +108,7 @@ public class editItems extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent main = new Intent();
-                main.putExtra("editedList", list);
+                main.putExtra("editedList", temp);
                 setResult(3, main);
                 setResult(5, main);
                 finish();
