@@ -1,6 +1,8 @@
 package com.example.andrew.roulette;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,7 +12,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -56,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
             intent1.putExtra("items", roulette);
             startActivityForResult(intent1, 3);
         }
+        if( id == R.id.action_save)
+        {
+            showBox();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -92,13 +101,53 @@ public class MainActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                roulette.getItemList().clear();
+                ArrayList<String> temp = roulette.getItemList();
+                temp.clear();
+                roulette.setItemList(temp);
                 ArrayAdapter adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.activity_listview, roulette.getItemList());
                 ListView listView = (ListView) findViewById(R.id.list);
 
                 listView.setAdapter(adapter);
             }
         });
+    }
+
+    public void showBox()
+    {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setTitle("Title");
+        dialog.setContentView(R.layout.title_box);
+        TextView txtMessage = (TextView) dialog.findViewById(R.id.txtmessage);
+        txtMessage.setText("Title: ");
+        txtMessage.setTextColor(Color.parseColor("#ff2222"));
+        final EditText editText = (EditText) dialog.findViewById(R.id.txttitle);
+        editText.setText(roulette.getListName());
+        Button bt = (Button)dialog.findViewById(R.id.btdone);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = editText.getText().toString();
+
+                if(title.compareTo("") == 0)
+                {
+                    dialog.dismiss();
+                }
+                else
+                {
+                    roulette.setListName(title);
+                }
+
+                dialog.dismiss();
+            }
+        });
+        Button bt2 = (Button)dialog.findViewById(R.id.btno);
+        bt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     @Override

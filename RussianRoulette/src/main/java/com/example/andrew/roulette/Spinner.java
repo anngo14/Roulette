@@ -96,13 +96,13 @@ public class Spinner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spinner);
-        setTitle(roulette.getListName());
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         roulette = getIntent().getParcelableExtra("items");
+        setTitle(roulette.getListName());
         if(roulette.getItemList().contains(""))
         {
             ArrayList<String> temp = roulette.getItemList();
