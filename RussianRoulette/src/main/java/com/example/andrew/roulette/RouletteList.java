@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class RouletteList implements Parcelable {
     private String listName;
-    private ArrayList itemList;
+    private ArrayList<String> itemList;
 
     public RouletteList()
     {
@@ -62,5 +62,16 @@ public class RouletteList implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(listName);
         dest.writeList(itemList);
+    }
+
+    public String toString()
+    {
+        String output = this.listName + "\n";
+        for(String s: this.itemList)
+        {
+            output += s + "\n";
+        }
+        output += "/endOfList\n";
+        return output;
     }
 }
