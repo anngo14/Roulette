@@ -141,7 +141,6 @@ public class Spinner extends AppCompatActivity {
 
     public String randomize(int degrees)
     {
-        System.out.println("" + degrees);
         if(degrees + 270 >= 360)
         {
             degrees -= 360;

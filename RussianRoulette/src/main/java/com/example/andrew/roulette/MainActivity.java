@@ -1,6 +1,7 @@
 package com.example.andrew.roulette;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.os.Environment;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +19,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -64,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
         {
             showBox();
         }
+        if( id == R.id.action_favorites)
+        {
+            Intent fav = new Intent(this, Favorites.class);
+            startActivityForResult(fav, 6);
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -102,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ArrayList<String> temp = roulette.getItemList();
                 temp.clear();
+                setTitle("Roulette");
                 roulette.setItemList(temp);
                 ArrayAdapter adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.activity_listview, roulette.getItemList());
                 ListView listView = (ListView) findViewById(R.id.list);
@@ -134,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 else
                 {
                     roulette.setListName(title);
-                    System.out.println(roulette.toString());
+                    saveRouletteList();
                 }
 
                 dialog.dismiss();
@@ -195,5 +209,59 @@ public class MainActivity extends AppCompatActivity {
 
             listView.setAdapter(adapter);
         }
+        else if(requestCode == 6)
+        {
+            roulette = data.getParcelableExtra("loadFromFavorite");
+            setTitle(roulette.getListName());
+            if(roulette.getItemList().contains(""))
+            {
+                ArrayList<String> temp = roulette.getItemList();
+                temp.remove("");
+                roulette.setItemList(temp);
+            }
+            ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, roulette.getItemList());
+            ListView listView = (ListView) findViewById(R.id.list);
+
+            listView.setAdapter(adapter);
+        }
     }
+
+    public void saveRouletteList()
+    {
+        FileOutputStream output = null;
+        FileOutputStream output2 = null;
+        String fileName = roulette.getListName();
+        final String fileNameList = "roulette_list_names";
+
+        String content = fileName+" ";
+        try {
+            output = openFileOutput(fileName, Context.MODE_PRIVATE);
+            output2 = openFileOutput(fileNameList, Context.MODE_APPEND);
+            output.write(roulette.toString().getBytes());
+            output2.write(content.getBytes());
+            Toast.makeText(this, "Saved to " + getFilesDir() + "/" + fileNameList, Toast.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(output != null) {
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(output2 != null)
+            {
+                try {
+                    output2.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
 }

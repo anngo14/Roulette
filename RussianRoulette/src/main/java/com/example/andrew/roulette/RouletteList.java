@@ -66,12 +66,11 @@ public class RouletteList implements Parcelable {
 
     public String toString()
     {
-        String output = this.listName + "\n";
+        String output = "";
         for(String s: this.itemList)
         {
-            output += s + "\n";
+            output += s + " ";
         }
-        output += "/endOfList\n";
         return output;
     }
 }
