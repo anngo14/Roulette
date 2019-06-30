@@ -28,6 +28,7 @@ import java.util.ArrayList;
 public class Favorites extends AppCompatActivity {
     ArrayList<String> names = new ArrayList<String>();
     ArrayAdapter<String> adapter;
+    int backButtonCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class Favorites extends AppCompatActivity {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                deleteFile(names.get(index));
                 names.remove(index);
                 updateFileNames();
                 adapter.notifyDataSetChanged();
@@ -124,7 +126,7 @@ public class Favorites extends AppCompatActivity {
             while((text = buffer.readLine()) != null) {
                 builder.append(text);
             }
-            String[] files = builder.toString().split("\\s+");
+            String[] files = builder.toString().split("\\\\");
 
             if(files[0].compareTo("") == 0)
             {
@@ -216,5 +218,21 @@ public class Favorites extends AppCompatActivity {
             e.printStackTrace();
         }
         return itemList;
+    }
+    @Override
+    public void onBackPressed()
+    {
+        if(backButtonCount >= 1)
+        {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(this, "Press the back button once again to close the application.", Toast.LENGTH_SHORT).show();
+            backButtonCount++;
+        }
     }
 }

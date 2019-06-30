@@ -30,6 +30,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     RouletteList roulette = new RouletteList();
+    int backButtonCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> temp = roulette.getItemList();
                 temp.clear();
                 setTitle("Roulette");
+                roulette.setListName("Roulette");
                 roulette.setItemList(temp);
                 ArrayAdapter adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.activity_listview, roulette.getItemList());
                 ListView listView = (ListView) findViewById(R.id.list);
@@ -233,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         String fileName = roulette.getListName();
         final String fileNameList = "roulette_list_names";
 
-        String content = fileName+" ";
+        String content = fileName+"\\\\";
         try {
             output = openFileOutput(fileName, Context.MODE_PRIVATE);
             output2 = openFileOutput(fileNameList, Context.MODE_APPEND);
@@ -262,6 +264,21 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
+    @Override
+    public void onBackPressed()
+    {
+        if(backButtonCount >= 1)
+        {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(this, "Press the back button once again to close the application.", Toast.LENGTH_SHORT).show();
+            backButtonCount++;
+        }
+    }
 
 }

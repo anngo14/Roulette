@@ -51,6 +51,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="scalingPercent" value="69" />
+                                                <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -60,7 +62,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="foregroundImage" value="C:\Users\Andrew\Desktop\shuffle-512.png" />
+                                      <entry key="foregroundImage" value="C:\Users\Andrew\Desktop\5050-200.png" />
                                     </map>
                                   </option>
                                 </PersistentState>

@@ -2,15 +2,19 @@ package com.example.andrew.roulette;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -20,14 +24,18 @@ import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
 
+import static android.graphics.Typeface.BOLD;
+
 public class Spinner extends AppCompatActivity {
 
     private TextView mTextMessage;
     RouletteList roulette = new RouletteList();
     PieChart pieChart;
+    ImageView img;
     private int[] percent;
     private int degree = 0, degreeOld = 0;
     private float HALF_SECTOR = 360f / roulette.getItemList().size() / 2f;
+    int backButtonCount = 0;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
 
@@ -92,7 +100,7 @@ public class Spinner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spinner);
-
+        img = (ImageView) findViewById(R.id.imageView2);
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -107,12 +115,13 @@ public class Spinner extends AppCompatActivity {
         }
         if(roulette.getItemList().size() == 0)
         {
+            img.setVisibility(View.INVISIBLE);
             TextView out = (TextView) findViewById(R.id.error);
             out.setText("EMPTY LIST!");
         }
         pieChart = (PieChart) findViewById(R.id.pie);
         pieChart.setRotationEnabled(false);
-        pieChart.setDrawHoleEnabled(false);
+        pieChart.setHoleRadius(10f);
         pieChart.setTransparentCircleAlpha(0);
         Legend l = pieChart.getLegend();
         l.setEnabled(false);
@@ -131,10 +140,11 @@ public class Spinner extends AppCompatActivity {
         PieDataSet pieDataSet = new PieDataSet(yEntry, "Percent");
         pieDataSet.setSliceSpace(5);
         pieDataSet.setDrawValues(false);
-        pieDataSet.setColor(Color.rgb(245,245,245));
+        pieDataSet.setColor(Color.rgb(255,255,255));
         PieData pieData = new PieData(pieDataSet);
         pieChart.setData(pieData);
         pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.setCenterTextTypeface(Typeface.defaultFromStyle(BOLD));
         pieChart.setEntryLabelTextSize(26);
         pieChart.invalidate();
     }
@@ -165,9 +175,25 @@ public class Spinner extends AppCompatActivity {
             {
                 TextView out = (TextView) findViewById(R.id.error);
                 out.setText("EMPTY LIST!");
+                img.setVisibility(View.INVISIBLE);
             }
             addDataSet();
         }
     }
-
+    @Override
+    public void onBackPressed()
+    {
+        if(backButtonCount >= 1)
+        {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(this, "Press the back button once again to close the application.", Toast.LENGTH_SHORT).show();
+            backButtonCount++;
+        }
+    }
 }
