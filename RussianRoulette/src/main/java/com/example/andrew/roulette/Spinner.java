@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -59,7 +60,7 @@ public class Spinner extends AppCompatActivity {
                             break;
                         }
                         degreeOld = degree % 360;
-                        degree = (int) (Math.random() * 360) + 1080;
+                        degree = (int) (Math.random() * 360) + 1800;
                         RotateAnimation rotate = new RotateAnimation(degreeOld, degree, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
                         rotate.setDuration(3000);
                         rotate.setFillAfter(true);
@@ -82,7 +83,11 @@ public class Spinner extends AppCompatActivity {
 
                             }
                         });
+                        RotateAnimation sRotate = new RotateAnimation(0.0f, 1800.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                        sRotate.setInterpolator(new DecelerateInterpolator());
+                        sRotate.setDuration(3150);
 
+                        img.startAnimation(sRotate);
                         pieChart.startAnimation(rotate);
                         break;
                     case R.id.editData:

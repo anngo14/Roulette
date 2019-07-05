@@ -62,6 +62,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="48a49f" />
                                       <entry key="foregroundImage" value="C:\Users\Andrew\Desktop\5050-200.png" />
                                     </map>
                                   </option>

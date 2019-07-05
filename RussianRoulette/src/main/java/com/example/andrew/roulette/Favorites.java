@@ -100,6 +100,7 @@ public class Favorites extends AppCompatActivity {
     public void configureBackButton()
     {
         FloatingActionButton backButton = (FloatingActionButton) findViewById(R.id.back);
+        backButton.setBackgroundColor(4934475);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,7 +127,7 @@ public class Favorites extends AppCompatActivity {
             while((text = buffer.readLine()) != null) {
                 builder.append(text);
             }
-            String[] files = builder.toString().split("\\\\");
+            String[] files = builder.toString().split("@@");
 
             if(files[0].compareTo("") == 0)
             {

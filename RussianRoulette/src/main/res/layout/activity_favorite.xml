@@ -33,7 +33,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
-        app:backgroundTint="#3F51B5"
+        app:backgroundTint="#4B4B4B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

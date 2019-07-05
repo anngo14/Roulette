@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         String fileName = roulette.getListName();
         final String fileNameList = "roulette_list_names";
 
-        String content = fileName+"\\\\";
+        String content = fileName + "@@";
         try {
             output = openFileOutput(fileName, Context.MODE_PRIVATE);
             output2 = openFileOutput(fileNameList, Context.MODE_APPEND);
