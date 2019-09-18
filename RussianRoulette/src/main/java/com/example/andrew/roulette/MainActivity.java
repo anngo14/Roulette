@@ -233,6 +233,11 @@ public class MainActivity extends AppCompatActivity {
         FileOutputStream output = null;
         FileOutputStream output2 = null;
         String fileName = roulette.getListName();
+        if(fileName.contains("/"))
+        {
+            Toast.makeText(this, "Invalid File Name! Try Again!", Toast.LENGTH_LONG).show();
+            return;
+        }
         final String fileNameList = "roulette_list_names";
 
         String content = fileName + "@@";
