@@ -24,6 +24,8 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static android.graphics.Typeface.BOLD;
 
@@ -33,6 +35,7 @@ public class Spinner extends AppCompatActivity {
     RouletteList roulette = new RouletteList();
     PieChart pieChart;
     ImageView img;
+    List<Integer> colors = new ArrayList<Integer>();
     private int[] percent;
     private int degree = 0, degreeOld = 0;
     private float HALF_SECTOR = 360f / roulette.getItemList().size() / 2f;
@@ -136,6 +139,22 @@ public class Spinner extends AppCompatActivity {
 
     private void addDataSet( )
     {
+        final int[] MY_COLORS = {
+            Color.BLUE,
+            Color.CYAN,
+            Color.GRAY,
+            Color.GREEN,
+            Color.LTGRAY,
+            Color.MAGENTA,
+            Color.RED,
+            Color.WHITE,
+            Color.YELLOW
+        };
+
+        for(int c: MY_COLORS) {
+            colors.add(c);
+        }
+        Collections.shuffle(colors);
         ArrayList<PieEntry> yEntry = new ArrayList<>();
         for(int i = 0; i < roulette.getItemList().size(); i++)
         {
@@ -145,7 +164,7 @@ public class Spinner extends AppCompatActivity {
         PieDataSet pieDataSet = new PieDataSet(yEntry, "Percent");
         pieDataSet.setSliceSpace(5);
         pieDataSet.setDrawValues(false);
-        pieDataSet.setColor(Color.rgb(255,255,255));
+        pieDataSet.setColors(colors);
         PieData pieData = new PieData(pieDataSet);
         pieChart.setData(pieData);
         pieChart.setEntryLabelColor(Color.BLACK);
