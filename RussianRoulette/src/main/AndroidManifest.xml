@@ -11,6 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Spinner2"
+            android:label="@string/title_activity_spinner2"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".Spinner"
             android:label="@string/title_activity_spinner" />
         <activity android:name=".editItems" />

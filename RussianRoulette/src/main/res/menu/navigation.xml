@@ -14,6 +14,6 @@
     <item
         android:id="@+id/editData"
         android:icon="@android:drawable/ic_menu_edit"
-        android:title="Edit Data" />
+        android:title="Edit" />
 
 </menu>

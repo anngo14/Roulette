@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.github.mikephil.charting.animation.Easing;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -34,7 +36,6 @@ public class Spinner extends AppCompatActivity {
     private TextView mTextMessage;
     RouletteList roulette = new RouletteList();
     PieChart pieChart;
-    ImageView img;
     List<Integer> colors = new ArrayList<Integer>();
     private int[] percent;
     private int degree = 0, degreeOld = 0;
@@ -86,11 +87,6 @@ public class Spinner extends AppCompatActivity {
 
                             }
                         });
-                        RotateAnimation sRotate = new RotateAnimation(0.0f, 1800.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                        sRotate.setInterpolator(new DecelerateInterpolator());
-                        sRotate.setDuration(3150);
-
-                        img.startAnimation(sRotate);
                         pieChart.startAnimation(rotate);
                         break;
                     case R.id.editData:
@@ -108,7 +104,6 @@ public class Spinner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spinner);
-        img = (ImageView) findViewById(R.id.imageView2);
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -123,13 +118,12 @@ public class Spinner extends AppCompatActivity {
         }
         if(roulette.getItemList().size() == 0)
         {
-            img.setVisibility(View.INVISIBLE);
             TextView out = (TextView) findViewById(R.id.error);
             out.setText("EMPTY LIST!");
         }
         pieChart = (PieChart) findViewById(R.id.pie);
         pieChart.setRotationEnabled(false);
-        pieChart.setHoleRadius(10f);
+        pieChart.setDrawHoleEnabled(false);
         pieChart.setTransparentCircleAlpha(0);
         Legend l = pieChart.getLegend();
         l.setEnabled(false);
@@ -199,7 +193,6 @@ public class Spinner extends AppCompatActivity {
             {
                 TextView out = (TextView) findViewById(R.id.error);
                 out.setText("EMPTY LIST!");
-                img.setVisibility(View.INVISIBLE);
             }
             addDataSet();
         }
