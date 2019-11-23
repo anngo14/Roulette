@@ -78,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
             Intent fav = new Intent(this, Favorites.class);
             startActivityForResult(fav, 6);
         }
+        if( id == R.id.action_add){
+            Intent addList = new Intent(MainActivity.this, editItems2.class);
+            startActivity(addList);
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -101,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         spin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent spin = new Intent(MainActivity.this, Spinner.class);
+                Intent spin = new Intent(MainActivity.this, Spinner2.class);
                 spin.putExtra("items", roulette);
                 startActivityForResult(spin, 4);
             }
@@ -135,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         TextView txtMessage = (TextView) dialog.findViewById(R.id.txtmessage);
         txtMessage.setText("Title: ");
         txtMessage.setTextColor(Color.parseColor("#ff2222"));
-        final EditText editText = (EditText) dialog.findViewById(R.id.txttitle);
+        final TextView editText = (TextView) dialog.findViewById(R.id.txttitle);
         editText.setText(roulette.getListName());
         Button bt = (Button)dialog.findViewById(R.id.btdone);
         bt.setOnClickListener(new View.OnClickListener() {

@@ -69,7 +69,7 @@ public class RouletteList implements Parcelable {
         String output = "";
         for(String s: this.itemList)
         {
-            output += s + " ";
+            output += s + "@!!!@";
         }
         return output;
     }

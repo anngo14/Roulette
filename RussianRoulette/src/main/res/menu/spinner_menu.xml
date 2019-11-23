@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.andrew.roulette.Spinner2">
 
-    <item android:title="@string/title_home" />
-    <item android:title="Edit" />
+    <item
+        android:id="@+id/action_home"
+        android:title="@string/title_home" />
+    <item
+        android:id="@+id/action_edit"
+        android:title="Edit" />
 </menu>

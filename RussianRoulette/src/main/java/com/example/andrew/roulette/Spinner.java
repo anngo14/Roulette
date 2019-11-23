@@ -1,3 +1,4 @@
+//Outdated Spinner Class
 package com.example.andrew.roulette;
 
 import android.content.Intent;

@@ -7,4 +7,9 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_spinner2">Spinner2</string>
     <string name="spinner_button">Spin</string>
+    <string name="title_activity_edit_items2">editItems2</string>
+    <string name="title_no">No</string>
+    <string name="title_yes">Yes</string>
+
 </resources>
+

@@ -6,6 +6,6 @@
     android:padding="15dp"
     android:textSize="30dip"
     android:textStyle="bold"
-    android:background = "#f0f8ff"
+    android:background = "#ffffff"
     >
     </TextView>

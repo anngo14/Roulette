@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.andrew.roulette.editItems2">
+
+    <item
+        android:id="@+id/save_list"
+        android:icon="@android:drawable/stat_sys_download"
+        android:title="Save"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/start_list"
+        android:icon="@android:drawable/ic_media_play"
+        android:title="@string/spinner_button"
+        app:showAsAction="ifRoom" />
+</menu>

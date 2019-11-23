@@ -25,8 +25,8 @@
         android:textSize="24sp" />
 
     <LinearLayout
-        android:layout_width="160dp"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
@@ -34,13 +34,13 @@
 
         <Button
             android:id="@+id/btcancel"
-            android:layout_width="80dp"
+            android:layout_width="85dp"
             android:layout_height="match_parent"
             android:text="@android:string/cancel" />
 
         <Button
             android:id="@+id/btdone"
-            android:layout_width="80dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:layout_weight="1"

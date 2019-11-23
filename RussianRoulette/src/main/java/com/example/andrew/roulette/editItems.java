@@ -60,11 +60,18 @@ public class editItems extends AppCompatActivity {
         final EditText editText = (EditText) dialog.findViewById(R.id.txtinput);
         editText.setText(old);
         Button bt = (Button)dialog.findViewById(R.id.btdone);
+        Button cnbtn = (Button)dialog.findViewById(R.id.btcancel);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 temp.getItemList().set(index, editText.getText().toString());
                 adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        cnbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 dialog.dismiss();
             }
         });
@@ -132,4 +139,5 @@ public class editItems extends AppCompatActivity {
             backButtonCount++;
         }
     }
+
 }

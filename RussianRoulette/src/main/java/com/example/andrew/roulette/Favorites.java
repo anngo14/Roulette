@@ -195,12 +195,7 @@ public class Favorites extends AppCompatActivity {
             while((text = buffer.readLine()) != null) {
                 builder.append(text);
             }
-            String[] files = builder.toString().split("\\s+");
-
-            if(files[0].compareTo("") == 0)
-            {
-                return itemList;
-            }
+            String[] files = builder.toString().split("@!!!@");
             for(String s: files)
             {
                 tempList.add(s);
