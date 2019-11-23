@@ -62,9 +62,10 @@ public class Spinner2 extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_edit) {
-            Intent edit = new Intent(Spinner2.this, editItems.class);
+            Intent edit = new Intent(Spinner2.this, editItems2.class);
             edit.putExtra("items", roulette);
-            startActivityForResult(edit, 5);
+            setResult(7, edit);
+            finish();
         }
         if( id == R.id.action_home) {
             Intent main = new Intent();

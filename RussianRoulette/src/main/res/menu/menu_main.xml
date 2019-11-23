@@ -7,19 +7,4 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="AddList"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="Edit Data 🔧"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_save"
-        android:orderInCategory="100"
-        android:title="Save Roulette 📼"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_favorites"
-        android:orderInCategory="100"
-        android:title="Favorites ❤"
-        app:showAsAction="never" />
 </menu>

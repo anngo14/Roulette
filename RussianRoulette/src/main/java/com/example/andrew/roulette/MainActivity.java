@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,14 +22,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    ArrayList<String> names = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
     RouletteList roulette = new RouletteList();
     int backButtonCount = 0;
 
@@ -39,15 +44,32 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        configureNextButton();
-        configureSpinButton();
-        configureDeleteButton();
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, roulette.getItemList());
+        getFileNames();
+        adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, names);
         ListView listView = (ListView) findViewById(R.id.list);
 
         listView.setAdapter(adapter);
-    }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                RouletteList temp = new RouletteList();
+                ArrayList<String> items = loadList(names.get(i));
+                temp.setListName(names.get(i));
+                temp.setItemList(items);
 
+                Intent main = new Intent(MainActivity.this, editItems2.class);
+                main.putExtra("loadFromFavorite", temp);
+                startActivity(main);
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int i, long l) {
+                showDeleteBox(names.get(i), i);
+                return true;
+            }
+        });
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -55,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -63,21 +84,6 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent1 = new Intent(MainActivity.this, editItems.class);
-            intent1.putExtra("items", roulette);
-            startActivityForResult(intent1, 3);
-        }
-        if( id == R.id.action_save)
-        {
-            showBox();
-        }
-        if( id == R.id.action_favorites)
-        {
-            Intent fav = new Intent(this, Favorites.class);
-            startActivityForResult(fav, 6);
-        }
         if( id == R.id.action_add){
             Intent addList = new Intent(MainActivity.this, editItems2.class);
             startActivity(addList);
@@ -85,157 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public void configureNextButton()
-    {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent next = new Intent(MainActivity.this, AddItem.class);
-                startActivityForResult(next, 2);
-            }
-        });
-    }
-
-    public void configureSpinButton()
-    {
-        FloatingActionButton spin = (FloatingActionButton) findViewById(R.id.startButton);
-        spin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent spin = new Intent(MainActivity.this, Spinner2.class);
-                spin.putExtra("items", roulette);
-                startActivityForResult(spin, 4);
-            }
-        });
-    }
-
-    public void configureDeleteButton()
-    {
-        FloatingActionButton delete = (FloatingActionButton) findViewById(R.id.mapButton);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArrayList<String> temp = roulette.getItemList();
-                temp.clear();
-                setTitle("Roulette");
-                roulette.setListName("Roulette");
-                roulette.setItemList(temp);
-                ArrayAdapter adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.activity_listview, roulette.getItemList());
-                ListView listView = (ListView) findViewById(R.id.list);
-
-                listView.setAdapter(adapter);
-            }
-        });
-    }
-
-    public void showBox()
-    {
-        final Dialog dialog = new Dialog(MainActivity.this);
-        dialog.setTitle("Title");
-        dialog.setContentView(R.layout.title_box);
-        TextView txtMessage = (TextView) dialog.findViewById(R.id.txtmessage);
-        txtMessage.setText("Title: ");
-        txtMessage.setTextColor(Color.parseColor("#ff2222"));
-        final TextView editText = (TextView) dialog.findViewById(R.id.txttitle);
-        editText.setText(roulette.getListName());
-        Button bt = (Button)dialog.findViewById(R.id.btdone);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String title = editText.getText().toString();
-
-                if(title.compareTo("") == 0)
-                {
-                    dialog.dismiss();
-                }
-                else
-                {
-                    roulette.setListName(title);
-                    if(title.contains("/")){
-                        Toast.makeText(MainActivity.this, "Invalid File Name! Try Again!", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    saveRouletteList();
-                }
-
-                dialog.dismiss();
-            }
-        });
-        Button bt2 = (Button)dialog.findViewById(R.id.btno);
-        bt2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 2)
-        {
-            String message = data.getStringExtra("newItem");
-            ArrayList<String> temp = roulette.getItemList();
-            temp.add(message);
-            roulette.setItemList(temp);
-            if(message.compareTo("") == 0)
-            {
-                temp = roulette.getItemList();
-                temp.remove(message);
-                roulette.setItemList(temp);
-            }
-
-        }
-        else if(requestCode == 3)
-        {
-            roulette = data.getParcelableExtra("editedList");
-            if(roulette.getItemList().contains(""))
-            {
-                ArrayList<String> temp = roulette.getItemList();
-                temp.remove("");
-                roulette.setItemList(temp);
-            }
-            ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, roulette.getItemList());
-            ListView listView = (ListView) findViewById(R.id.list);
-
-            listView.setAdapter(adapter);
-        }
-        else if(requestCode == 4)
-        {
-            roulette = data.getParcelableExtra("editFromSpin");
-            if(roulette.getItemList().contains(""))
-            {
-                ArrayList<String> temp = roulette.getItemList();
-                temp.remove("");
-                roulette.setItemList(temp);
-            }
-            ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, roulette.getItemList());
-            ListView listView = (ListView) findViewById(R.id.list);
-
-            listView.setAdapter(adapter);
-        }
-        else if(requestCode == 6)
-        {
-            roulette = data.getParcelableExtra("loadFromFavorite");
-            setTitle(roulette.getListName());
-            if(roulette.getItemList().contains(""))
-            {
-                ArrayList<String> temp = roulette.getItemList();
-                temp.remove("");
-                roulette.setItemList(temp);
-            }
-            ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, roulette.getItemList());
-            ListView listView = (ListView) findViewById(R.id.list);
-
-            listView.setAdapter(adapter);
-        }
-    }
-
     public void saveRouletteList()
     {
         FileOutputStream output = null;
@@ -288,5 +143,137 @@ public class MainActivity extends AppCompatActivity {
             backButtonCount++;
         }
     }
+    public void getFileNames()
+    {
+        final String fileNameList = "roulette_list_names";
+        FileInputStream input = null;
+        ArrayList<String> tempList = new ArrayList<String>();
+        try {
+            input = openFileInput(fileNameList);
+            InputStreamReader isr = new InputStreamReader(input);
+            BufferedReader buffer = new BufferedReader(isr);
+            StringBuilder builder = new StringBuilder();
+            String text;
 
+            while((text = buffer.readLine()) != null) {
+                builder.append(text);
+            }
+            String[] files = builder.toString().split("@@");
+
+            if(files[0].compareTo("") == 0)
+            {
+                return;
+            }
+            for(String s: files)
+            {
+                tempList.add(s);
+            }
+
+            for(String s: tempList)
+            {
+                if(!names.contains(s))
+                {
+                    names.add(s);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public ArrayList<String> loadList(String fileName)
+    {
+        ArrayList<String> itemList = new ArrayList<String>();
+
+        FileInputStream input = null;
+        ArrayList<String> tempList = new ArrayList<String>();
+        try {
+            input = openFileInput(fileName);
+            InputStreamReader isr = new InputStreamReader(input);
+            BufferedReader buffer = new BufferedReader(isr);
+            StringBuilder builder = new StringBuilder();
+            String text;
+
+            while((text = buffer.readLine()) != null) {
+                builder.append(text);
+            }
+            String[] files = builder.toString().split("@!!!@");
+            for(String s: files)
+            {
+                tempList.add(s);
+            }
+
+            for(String s: tempList)
+            {
+                if(!itemList.contains(s))
+                {
+                    itemList.add(s);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return itemList;
+    }
+    public void showDeleteBox(String old, final int index)
+    {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.setTitle("Delete");
+        dialog.setContentView(R.layout.delete_box);
+        TextView txtMessage = (TextView) dialog.findViewById(R.id.txtmessage);
+        txtMessage.setText("Do you wish to Delete list?");
+        txtMessage.setTextColor(Color.parseColor("#ff2222"));
+        final TextView txtold = (TextView) dialog.findViewById(R.id.txtold);
+        txtold.setText(old);
+        Button bt = (Button)dialog.findViewById(R.id.btdone);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteFile(names.get(index));
+                names.remove(index);
+                updateFileNames();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        Button bt2 = (Button)dialog.findViewById(R.id.btno);
+        bt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    public void updateFileNames()
+    {
+        FileOutputStream output = null;
+        final String fileName = "roulette_list_names";
+        String content = "";
+
+        for(String s: names)
+        {
+            content += s + " ";
+        }
+        try {
+            output = openFileOutput(fileName, Context.MODE_PRIVATE);
+            output.write(content.getBytes());
+            Toast.makeText(this, "Saved to " + getFilesDir() + "/" + fileName, Toast.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(output != null) {
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

@@ -35,6 +35,10 @@ public class editItems2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RouletteList fav = getIntent().getParcelableExtra("loadFromFavorite");
+        if(fav != null){
+            rouletteList = fav;
+        }
         rouletteList.getItemList().add("Add Item " + '\uFF0B');
         setContentView(R.layout.activity_edit_items2);
         setTitle(rouletteList.getListName());
@@ -91,7 +95,14 @@ public class editItems2 extends AppCompatActivity {
             showBox();
         }
         if(id == R.id.start_list) {
-
+            Intent spin = new Intent(editItems2.this, Spinner2.class);
+            rouletteList.getItemList().remove(rouletteList.getItemList().size()-1);
+            if(rouletteList.getItemList().size() == 0){
+                Toast.makeText(this, "No Items in this Roulette! Please Try Again", Toast.LENGTH_LONG).show();
+                return true;
+            }
+            spin.putExtra("items", rouletteList);
+            startActivityForResult(spin, 7);
         }
 
         return super.onOptionsItemSelected(item);
@@ -234,6 +245,19 @@ public class editItems2 extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 7)
+        {
+            rouletteList = data.getParcelableExtra("items");
+            rouletteList.getItemList().add("Add Item " + '\uFF0B');
+            adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, rouletteList.getItemList());
+            ListView listView = (ListView) findViewById(R.id.list);
+
+            listView.setAdapter(adapter);
         }
     }
 }
