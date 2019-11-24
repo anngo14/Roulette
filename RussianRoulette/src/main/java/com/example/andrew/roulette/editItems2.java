@@ -198,6 +198,7 @@ public class editItems2 extends AppCompatActivity {
                 setTitle(rouletteList.getListName());
                 rouletteList.getItemList().remove(rouletteList.getItemList().size()-1);
                 saveRouletteList();
+                rouletteList.getItemList().add("Add Item " + '\uFF0B');
                 dialog.dismiss();
             }
         });
