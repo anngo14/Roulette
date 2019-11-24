@@ -8,4 +8,34 @@
     tools:context=".Spinner2"
     tools:showIn="@layout/activity_spinner2">
 
+    <TextView
+        android:id="@+id/output"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:textSize="28sp"
+        app:layout_anchorGravity="top|center"
+        app:layout_constraintBottom_toTopOf="@+id/pie"
+        app:layout_constraintEnd_toEndOf="@+id/pie"
+        app:layout_constraintStart_toStartOf="@+id/pie" />
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_anchorGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".6"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.github.mikephil.charting.charts.PieChart>
 </androidx.constraintlayout.widget.ConstraintLayout>

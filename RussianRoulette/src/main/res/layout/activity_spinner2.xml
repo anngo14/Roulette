@@ -25,25 +25,6 @@
         android:id="@+id/include2"
         layout="@layout/content_spinner2" />
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pie"
-        android:layout_width="398dp"
-        android:layout_height="388dp"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_anchor="@+id/include2"
-        app:layout_anchorGravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </com.github.mikephil.charting.charts.PieChart>
-
     <Button
         android:id="@+id/spinBtn"
         android:layout_width="200dp"
@@ -53,16 +34,6 @@
         android:textSize="22sp"
         app:layout_anchor="@+id/include2"
         app:layout_anchorGravity="bottom|center" />
-
-    <TextView
-        android:id="@+id/output"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginTop="80dp"
-        android:gravity="center"
-        android:textSize="28sp"
-        app:layout_anchor="@+id/include2"
-        app:layout_anchorGravity="top|center" />
 
     <TextView
         android:id="@+id/error"
