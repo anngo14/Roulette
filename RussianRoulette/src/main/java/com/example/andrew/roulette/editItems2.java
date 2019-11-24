@@ -97,8 +97,10 @@ public class editItems2 extends AppCompatActivity {
         if(id == R.id.start_list) {
             Intent spin = new Intent(editItems2.this, Spinner2.class);
             rouletteList.getItemList().remove(rouletteList.getItemList().size()-1);
+            //Blocks spin activity if rouletteList has no items
             if(rouletteList.getItemList().size() == 0){
                 Toast.makeText(this, "No Items in this Roulette! Please Try Again", Toast.LENGTH_LONG).show();
+                rouletteList.getItemList().add("Add Item " + '\uFF0B');
                 return true;
             }
             spin.putExtra("items", rouletteList);
