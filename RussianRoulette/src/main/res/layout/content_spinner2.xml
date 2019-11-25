@@ -38,4 +38,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </com.github.mikephil.charting.charts.PieChart>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="214dp"
+        android:layout_height="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/output"
+        app:srcCompat="@drawable/pointer" />
 </androidx.constraintlayout.widget.ConstraintLayout>

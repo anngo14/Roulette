@@ -24,6 +24,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="opacityPercent" value="80" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -62,8 +63,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="backgroundColor" value="a6a4a2" />
-                                      <entry key="foregroundImage" value="C:\Users\Andrew\Desktop\5050-200.png" />
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="a4a1a6" />
+                                      <entry key="foregroundImage" value="C:\Users\Andrew\StudioProjects\Roulette\RussianRoulette\src\main\res\drawable\icon.png" />
                                     </map>
                                   </option>
                                 </PersistentState>
