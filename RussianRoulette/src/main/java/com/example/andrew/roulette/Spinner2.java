@@ -140,7 +140,7 @@ public class Spinner2 extends AppCompatActivity {
         }
 
         PieDataSet pieDataSet = new PieDataSet(yEntry, "Percent");
-        pieDataSet.setSliceSpace(5);
+        pieDataSet.setSliceSpace(0);
         pieDataSet.setDrawValues(false);
         pieDataSet.setColors(colors);
         PieData pieData = new PieData(pieDataSet);
