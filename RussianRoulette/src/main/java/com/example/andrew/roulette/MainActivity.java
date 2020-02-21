@@ -85,48 +85,12 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if( id == R.id.action_add){
+        if (id == R.id.action_add) {
             Intent addList = new Intent(MainActivity.this, editItems2.class);
             startActivity(addList);
         }
 
         return super.onOptionsItemSelected(item);
-    }
-    public void saveRouletteList()
-    {
-        FileOutputStream output = null;
-        FileOutputStream output2 = null;
-        String fileName = roulette.getListName();
-        final String fileNameList = "roulette_list_names";
-
-        String content = fileName + "@@";
-        try {
-            output = openFileOutput(fileName, Context.MODE_PRIVATE);
-            output2 = openFileOutput(fileNameList, Context.MODE_APPEND);
-            output.write(roulette.toString().getBytes());
-            output2.write(content.getBytes());
-            Toast.makeText(this, "Saved to " + getFilesDir() + "/" + fileNameList, Toast.LENGTH_LONG).show();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if(output != null) {
-                try {
-                    output.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(output2 != null)
-            {
-                try {
-                    output2.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
     @Override
     public void onBackPressed()

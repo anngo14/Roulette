@@ -1,5 +1,8 @@
 package com.example.andrew.roulette;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -21,16 +24,25 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.graphics.Typeface.BOLD;
 
@@ -39,7 +51,10 @@ public class Spinner2 extends AppCompatActivity {
     private TextView mTextMessage;
     RouletteList roulette = new RouletteList();
     PieChart pieChart;
+    ImageView imageView;
+    int pieSlice;
     List<Integer> colors = new ArrayList<Integer>();
+    private Timer timer = new Timer();
     private int[] percent;
     private int degree = 0, degreeOld = 0;
     private float HALF_SECTOR = 360f / roulette.getItemList().size() / 2f;
@@ -111,6 +126,7 @@ public class Spinner2 extends AppCompatActivity {
         l.setEnabled(false);
         pieChart.getDescription().setEnabled(false);
         addDataSet();
+        pieSlice = 360 / roulette.getItemList().size();
     }
     private void addDataSet( )
     {
@@ -177,6 +193,7 @@ public class Spinner2 extends AppCompatActivity {
     }
     public void configureSpinButton(){
         Button sp = (Button) findViewById(R.id.spinBtn);
+        imageView = (ImageView) findViewById(R.id.imageView);
         sp.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -186,30 +203,85 @@ public class Spinner2 extends AppCompatActivity {
                     out.setText("ERROR! No items in Roulette");
                     return;
                 }
+
                 degreeOld = degree % 360;
                 degree = (int) (Math.random() * 360) + 1800;
-                RotateAnimation rotate = new RotateAnimation(degreeOld, degree, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-                rotate.setDuration(3000);
-                rotate.setFillAfter(true);
-                rotate.setInterpolator(new DecelerateInterpolator());
-                rotate.setAnimationListener(new Animation.AnimationListener() {
+
+                ObjectAnimator animation = ObjectAnimator.ofFloat(pieChart, "rotation", degreeOld, degree);
+                animation.setDuration(3000);
+                pieChart.setPivotX((pieChart.getMeasuredWidth() / 2));
+                pieChart.setPivotY((pieChart.getMeasuredHeight() / 2));
+                animation.setInterpolator(new DecelerateInterpolator());
+                animation.addListener(new Animator.AnimatorListener() {
                     @Override
-                    public void onAnimationStart(Animation animation) {
+                    public void onAnimationStart(Animator animator) {
                         TextView out = (TextView) findViewById(R.id.output);
                         out.setText("");
                     }
 
                     @Override
-                    public void onAnimationEnd(Animation animation) {
+                    public void onAnimationEnd(Animator animator) {
                         TextView out = (TextView) findViewById(R.id.output);
                         out.setText(randomize(360 - (degree % 360)));
                     }
 
                     @Override
+                    public void onAnimationCancel(Animator animator) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+
+                    }
+                });
+                animation.start();
+
+                AnimationSet animationSet = new AnimationSet(false);
+                AnimationSet animationSet2 = new AnimationSet(false);
+                TranslateAnimation translateUp = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, -0.75f);
+                translateUp.setDuration(1000);
+                translateUp.setFillAfter(true);
+                translateUp.setInterpolator(new DecelerateInterpolator());
+
+                TranslateAnimation translateDown = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0);
+                translateDown.setDuration(1000);
+                translateDown.setFillAfter(true);
+                translateDown.setInterpolator(new BounceInterpolator());
+
+                ScaleAnimation scaleLarge = new ScaleAnimation(1f, 1.5f, 1f, 1.5f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleLarge.setDuration(100);
+                scaleLarge.setFillAfter(true);
+
+                ScaleAnimation scaleSmall = new ScaleAnimation(1.5f, 1f, 1.5f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleSmall.setDuration(2000);
+                scaleSmall.setFillAfter(true);
+
+                animationSet.addAnimation(scaleLarge);
+                animationSet.addAnimation(translateUp);
+                animationSet.setFillAfter(true);
+                animationSet2.addAnimation(translateDown);
+                animationSet2.addAnimation(scaleSmall);
+                animationSet2.setFillBefore(true);
+                translateUp.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        Timer timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                imageView.startAnimation(animationSet2);
+                            }
+                        }, 1400);
+                    }
+                    @Override
                     public void onAnimationRepeat(Animation animation) {
                     }
                 });
-                pieChart.startAnimation(rotate);
+                imageView.startAnimation(animationSet);
             }
         });
     }
