@@ -239,34 +239,47 @@ public class Spinner2 extends AppCompatActivity {
 
                 AnimationSet animationSet = new AnimationSet(false);
                 AnimationSet animationSet2 = new AnimationSet(false);
-                TranslateAnimation translateUp = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, -0.75f);
+                TranslateAnimation translateUp = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, -0.5f);
                 translateUp.setDuration(1000);
                 translateUp.setFillAfter(true);
                 translateUp.setInterpolator(new DecelerateInterpolator());
 
-                TranslateAnimation translateDown = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, -0.5f, Animation.RELATIVE_TO_SELF, 0);
+                TranslateAnimation translateDown = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, -0.4f, Animation.RELATIVE_TO_SELF, 0);
                 translateDown.setDuration(1000);
                 translateDown.setFillAfter(true);
-                translateDown.setInterpolator(new BounceInterpolator());
+                translateDown.setInterpolator(new DecelerateInterpolator());
 
-                ScaleAnimation scaleLarge = new ScaleAnimation(1f, 1.5f, 1f, 1.5f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                ScaleAnimation scaleLarge = new ScaleAnimation(1f, 1.25f, 1f, 1.25f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 scaleLarge.setDuration(100);
                 scaleLarge.setFillAfter(true);
 
-                ScaleAnimation scaleSmall = new ScaleAnimation(1.5f, 1f, 1.5f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleSmall.setDuration(2000);
+                ScaleAnimation scaleSame = new ScaleAnimation(1.25f, 1.25f, 1.25f, 1.25f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleSame.setDuration(1000);
+                scaleSame.setFillAfter(true);
+
+                ScaleAnimation scaleSmall = new ScaleAnimation(1.25f, 1f, 1.25f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                scaleSmall.setDuration(100);
                 scaleSmall.setFillAfter(true);
 
                 animationSet.addAnimation(scaleLarge);
                 animationSet.addAnimation(translateUp);
                 animationSet.setFillAfter(true);
                 animationSet2.addAnimation(translateDown);
-                animationSet2.addAnimation(scaleSmall);
+                animationSet2.addAnimation(scaleSame);
                 animationSet2.setFillBefore(true);
+                animationSet2.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        imageView.startAnimation(scaleSmall);
+                    }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
                 translateUp.setAnimationListener(new Animation.AnimationListener() {
                     @Override
-                    public void onAnimationStart(Animation animation) {
-                    }
+                    public void onAnimationStart(Animation animation) {}
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         Timer timer = new Timer();
@@ -275,11 +288,10 @@ public class Spinner2 extends AppCompatActivity {
                             public void run() {
                                 imageView.startAnimation(animationSet2);
                             }
-                        }, 1400);
+                        }, 1000);
                     }
                     @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
+                    public void onAnimationRepeat(Animation animation) {}
                 });
                 imageView.startAnimation(animationSet);
             }
