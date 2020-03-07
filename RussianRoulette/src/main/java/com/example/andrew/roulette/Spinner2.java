@@ -137,7 +137,7 @@ public class Spinner2 extends AppCompatActivity {
                 Color.parseColor("#daffa3"),
                 Color.parseColor("#a6ffb3"),
                 Color.parseColor("#9dffe7"),
-                Color.parseColor("#a7f3ff"),
+                Color.parseColor("#9DDFEA"),
                 Color.parseColor("#a7beff"),
                 Color.parseColor("#c3baff"),
                 Color.parseColor("#f5ccff"),
@@ -148,7 +148,6 @@ public class Spinner2 extends AppCompatActivity {
         for(int c: MY_COLORS) {
             colors.add(c);
         }
-        Collections.shuffle(colors);
         ArrayList<PieEntry> yEntry = new ArrayList<>();
         for(int i = 0; i < roulette.getItemList().size(); i++)
         {
@@ -216,12 +215,14 @@ public class Spinner2 extends AppCompatActivity {
                     @Override
                     public void onAnimationStart(Animator animator) {
                         TextView out = (TextView) findViewById(R.id.output);
+                        out.setVisibility(View.INVISIBLE);
                         out.setText("");
                     }
 
                     @Override
                     public void onAnimationEnd(Animator animator) {
                         TextView out = (TextView) findViewById(R.id.output);
+                        out.setVisibility(View.VISIBLE);
                         out.setText(randomize(360 - (degree % 360)));
                     }
 
@@ -254,11 +255,11 @@ public class Spinner2 extends AppCompatActivity {
                 scaleLarge.setFillAfter(true);
 
                 ScaleAnimation scaleSame = new ScaleAnimation(1.25f, 1.25f, 1.25f, 1.25f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleSame.setDuration(1000);
+                scaleSame.setDuration(1100);
                 scaleSame.setFillAfter(true);
 
                 ScaleAnimation scaleSmall = new ScaleAnimation(1.25f, 1f, 1.25f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                scaleSmall.setDuration(100);
+                scaleSmall.setDuration(250);
                 scaleSmall.setFillAfter(true);
 
                 animationSet.addAnimation(scaleLarge);
@@ -273,6 +274,7 @@ public class Spinner2 extends AppCompatActivity {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         imageView.startAnimation(scaleSmall);
+                        sp.setText("RESPIN");
                     }
                     @Override
                     public void onAnimationRepeat(Animation animation) {}

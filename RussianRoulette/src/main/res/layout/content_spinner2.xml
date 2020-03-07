@@ -10,11 +10,13 @@
 
     <TextView
         android:id="@+id/output"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/border"
         android:gravity="center"
         android:textSize="28sp"
+        android:visibility="invisible"
         app:layout_anchorGravity="top|center"
         app:layout_constraintBottom_toTopOf="@+id/pie"
         app:layout_constraintEnd_toEndOf="@+id/pie"
