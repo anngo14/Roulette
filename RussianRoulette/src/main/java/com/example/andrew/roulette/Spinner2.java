@@ -204,7 +204,7 @@ public class Spinner2 extends AppCompatActivity {
                 }
 
                 degreeOld = degree % 360;
-                degree = (int) (Math.random() * 360) + 1800;
+                degree = (int) (Math.random() * 721) + 1800;
 
                 ObjectAnimator animation = ObjectAnimator.ofFloat(pieChart, "rotation", degreeOld, degree);
                 animation.setDuration(3000);
@@ -217,6 +217,7 @@ public class Spinner2 extends AppCompatActivity {
                         TextView out = (TextView) findViewById(R.id.output);
                         out.setVisibility(View.INVISIBLE);
                         out.setText("");
+                        sp.setEnabled(false);
                     }
 
                     @Override
@@ -224,6 +225,7 @@ public class Spinner2 extends AppCompatActivity {
                         TextView out = (TextView) findViewById(R.id.output);
                         out.setVisibility(View.VISIBLE);
                         out.setText(randomize(360 - (degree % 360)));
+                        sp.setEnabled(true);
                     }
 
                     @Override
@@ -274,7 +276,6 @@ public class Spinner2 extends AppCompatActivity {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         imageView.startAnimation(scaleSmall);
-                        sp.setText("RESPIN");
                     }
                     @Override
                     public void onAnimationRepeat(Animation animation) {}
