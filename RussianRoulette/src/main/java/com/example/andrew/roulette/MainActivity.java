@@ -22,6 +22,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getFileNames();
+        checkNamesSize();
         adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, names);
         ListView listView = (ListView) findViewById(R.id.list);
 
@@ -200,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
                 deleteFile(names.get(index));
                 names.remove(index);
                 updateFileNames();
+                checkNamesSize();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -239,6 +243,13 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+    public void checkNamesSize(){
+        if(names.size() == 0){
+            TextView txt = (TextView) findViewById(R.id.listWarning);
+            txt.setText("No Roulettes Found");
+            txt.setVisibility(View.VISIBLE);
         }
     }
 }

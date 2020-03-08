@@ -204,7 +204,7 @@ public class Spinner2 extends AppCompatActivity {
                 }
 
                 degreeOld = degree % 360;
-                degree = (int) (Math.random() * 721) + 1800;
+                degree = (int) (Math.random() * 361) + 1800;
 
                 ObjectAnimator animation = ObjectAnimator.ofFloat(pieChart, "rotation", degreeOld, degree);
                 animation.setDuration(3000);
@@ -219,24 +219,14 @@ public class Spinner2 extends AppCompatActivity {
                         out.setText("");
                         sp.setEnabled(false);
                     }
-
                     @Override
                     public void onAnimationEnd(Animator animator) {
-                        TextView out = (TextView) findViewById(R.id.output);
-                        out.setVisibility(View.VISIBLE);
-                        out.setText(randomize(360 - (degree % 360)));
-                        sp.setEnabled(true);
-                    }
 
+                    }
                     @Override
-                    public void onAnimationCancel(Animator animator) {
-
-                    }
-
+                    public void onAnimationCancel(Animator animator) {}
                     @Override
-                    public void onAnimationRepeat(Animator animator) {
-
-                    }
+                    public void onAnimationRepeat(Animator animator) {}
                 });
                 animation.start();
 
@@ -276,6 +266,10 @@ public class Spinner2 extends AppCompatActivity {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         imageView.startAnimation(scaleSmall);
+                        TextView out = (TextView) findViewById(R.id.output);
+                        out.setVisibility(View.VISIBLE);
+                        out.setText(randomize(360 - (degree % 360)));
+                        sp.setEnabled(true);
                     }
                     @Override
                     public void onAnimationRepeat(Animation animation) {}
@@ -291,7 +285,7 @@ public class Spinner2 extends AppCompatActivity {
                             public void run() {
                                 imageView.startAnimation(animationSet2);
                             }
-                        }, 1000);
+                        }, 750);
                     }
                     @Override
                     public void onAnimationRepeat(Animation animation) {}
